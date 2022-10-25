@@ -1,5 +1,5 @@
 # Dieses Skript setzt für alle User innerhalb der gewählte OU das User-Passwort
-# Stannek GmbH v.1.0 - 08.06.2022 - E.Sauerbier
+# Stannek GmbH v.1.1 - 20.10.2022 - E.Sauerbier
 
 # Organisationseinheit auswählen
 $OU = Get-ADOrganizationalUnit -Filter * | Out-GridView -Title "Organisationseinheit auswählen" -PassThru
@@ -17,4 +17,7 @@ If ($Password -eq $Null) {Break}
 $Users = Get-ADUser -Filter * -SearchBase $Ou.DistinguishedName
 
 # Passwort für alle Benutzer der OU ändern
-foreach ($User in $Users) {Set-ADAccountPassword $User -NewPassword $Password.Password}
+foreach ($User in $Users) {
+        Set-ADAccountPassword -Identity $User -Reset -NewPassword $Password.Password -PassThru
+        Write-Host "Passwort für $($User.Name) wurde gesetzt" -ForegroundColor Red
+        }
