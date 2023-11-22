@@ -1,5 +1,5 @@
 ﻿# Dieses Skript bereitet die ActiveDirectory Domaene für LAPS native vor
-# Stannek GmbH v.1.0 - 21.11.2023 - E.Sauerbier
+# Stannek GmbH v.1.1 - 22.11.2023 - E.Sauerbier
 
 # Parameter
 $GPONameLAPS = "LAPS-native"
@@ -7,6 +7,9 @@ $GPODescription = "LAPS native - Stand: 21.11.2023`r`n-Anhebung der Kennworthist
 $PathADMXLaps = Join-Path -Path $env:SystemRoot -ChildPath "PolicyDefinitions\LAPS.ADMX"
 $PathADMLLaps = Join-Path -Path $env:SystemRoot -ChildPath "PolicyDefinitions\de-DE\LAPS.ADML"
 $PathCentralPD = Join-Path -Path $env:SystemRoot -ChildPath "SYSVOL\domain\Policies\PolicyDefinitions"
+
+# Check ob LAPS native bereits eingerichtet ist, wenn ja Skript abbrechen
+If ($(get-gpo -Name $GPONameLAPS -ErrorAction SilentlyContinue).Computer.Enabled -eq $True) {Throw "LAPS native bereits eingerichtet"}
 
 # Check ob LAPS ADMX vorhanden, wenn nicht Skript abbrechen
 If (!(Test-Path -Path $PathADMXLaps)) {Throw "LAPS Native ADMX-File fehlt, Update notwendig oder Server nicht 2019 oder neuer"}
