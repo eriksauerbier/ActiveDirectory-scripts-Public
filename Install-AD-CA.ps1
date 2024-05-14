@@ -1,5 +1,5 @@
 ﻿# Skript zum Installieren einer ActiveDirectory Zertifizierungsstelle
-# Stannek GmbH - v.1.0.1 - 13.05.2024 - E.Sauerbier
+# Stannek GmbH - v.1.0.2 - 14.05.2024 - E.Sauerbier
 
 # Parameter
 $ParamCAVPU = 7 # Gueltigkeitsdauer der CA-Zertifikate
@@ -12,7 +12,7 @@ If ($(Get-WindowsFeature -Name ADCS-Cert-Authority).InstallState -ne "Installed"
     Install-WindowsFeature -Name ADCS-Cert-Authority -IncludeManagementTools
 
     # Zertifizierungsstelle einrichten
-    Install-AdcsCertificationAuthority -CAType EnterpriseRootCa -CryptoProviderName "RSA#Microsoft Software Key Storage Provider" -KeyLength 4096 -HashAlgorithmName SHA256 -ValidityPeriod Years -ValidityPeriodUnits $ParamCAVPU -Force
+    Install-AdcsCertificationAuthority -CAType EnterpriseRootCa -CryptoProviderName "RSA#Microsoft Software Key Storage Provider" -KeyLength 4096 -HashAlgorithmName SHA512 -ValidityPeriod Years -ValidityPeriodUnits $ParamCAVPU -Force
 
     # Gueltigkeitsdauer der Zertifikate verlaengern
     certutil -setreg ca\ValidityPeriodUnits $ParamVPU
